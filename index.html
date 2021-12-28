@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+		<meta content="utf-8" http-equiv="encoding" />
+        <link rel="icon" href="./src/mine.png" />
+        <title>Minesweeper</title>
+        <style type="text/css">
+body {
+    position: relative;
+    font-family: monospace;
+    margin: 0px;
+}
+            
+.warnings {
+    background-color: red;
+    color: white;
+    height: fit-content;
+    width: 100%;
+    margin: 0px;
+}
+
+canvas {
+    margin: auto;
+    display: block;
+}
+        </style>
+        <script type="text/javascript" src="js/main.js"></script>
+    </head>
+    <body>
+        <noscript>
+			<p class="warnings"><strong>WARNING: </strong>This website requires JavaScript enabled, please enable it in your browser settings and reload this page.</p>
+		</noscript>
+        <canvas id="canvas" width="600" height="600"></canvas>
+        <div style="display: none;">
+            <img id="empty" src="src/empty.png" />
+            <img id="block1" src="src/block_1.png" />
+            <img id="block2" src="src/block_2.png" />
+            <img id="block3" src="src/block_3.png" />
+            <img id="block4" src="src/block_4.png" />
+            <img id="block5" src="src/block_5.png" />
+            <img id="block6" src="src/block_6.png" />
+            <img id="block7" src="src/block_7.png" />
+            <img id="block8" src="src/block_8.png" />
+            <img id="mine-clicked" src="src/mine_clicked.png" />
+            <img id="mine" src="src/mine.png" />
+            <img id="flagged" src="src/flagged.png" />
+            <img id="covered" src="src/covered.png" /> 
+        </div>
+        <script type="text/javascript">
+let images = {
+    empty: document.getElementById("empty"),
+    block1: document.getElementById("block1"),
+    block2: document.getElementById("block2"),
+    block3: document.getElementById("block3"),
+    block4: document.getElementById("block4"),
+    block5: document.getElementById("block5"),
+    block6: document.getElementById("block6"),
+    block7: document.getElementById("block7"),
+    block8: document.getElementById("block8"),
+    covered: document.getElementById("covered"),
+    flagged: document.getElementById("flagged"),
+    mine: document.getElementById("mine"),
+    mineClicked: document.getElementById("mine-clicked"),
+};
+
+let game = new Minesweeper(document.getElementById("canvas"), images);
+game.start();
+        </script>
+    </body>
+</html>
