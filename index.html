@@ -20,9 +20,73 @@ body {
     margin: 0px;
 }
 
+#container {
+    height: fit-content;
+    width: fit-content;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#game-w {
+    height: fit-content;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#game-w div {
+    height: fit-content;
+    width: fit-content;
+    text-align: center;
+    font-size: 18px;
+    margin: 0px;
+    white-space: pre-wrap;
+}
+
+#customize-menu {
+    height: fit-content;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.customize-menu-options {
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+}
+
+.customize-menu-options p {
+    height: fit-content;
+    width: fit-content;
+    text-align: center;
+    font-size: 16px;
+    margin: 0px;
+    white-space: pre-wrap;
+}
+
+.customize-menu-options input {
+    max-width: 50px;
+}
+
+.buttons {
+    height: fit-content;
+    width: fit-content;
+    text-align: center;
+    background-color: #323232;
+    color: white;
+}
+
 canvas {
-    margin: auto;
     display: block;
+    border-style: solid;
+    border-color: gray;
 }
         </style>
         <script type="text/javascript" src="js/main.js"></script>
@@ -31,7 +95,35 @@ canvas {
         <noscript>
 			<p class="warnings"><strong>WARNING: </strong>This website requires JavaScript enabled, please enable it in your browser settings and reload this page.</p>
 		</noscript>
-        <canvas id="canvas" width="600" height="600"></canvas>
+        <div id="container">
+            <div id="game-w">
+				<div>Difficulty: </div>
+				<select id="difficulty" onchange="updateSelection(this)">
+					<option value="easy">Easy</option>
+					<option value="normal">Normal</option>
+					<option value="hard">Hard</option>
+                    <option value="custom">Custom</option>
+				</select>
+				<input class="buttons" type="button" value="Start" onclick="start(this)" />
+			</div>
+            <div id="customize-menu" style="display: none;">
+                <div class="customize-menu-options">
+                    <p>Height: </p>
+                    <input id="height" type="number" value="15" />
+                </div>
+                <div class="customize-menu-options">
+                    <p>Width:  </p>
+                    <input id="width" type="number" value="15" />
+                </div>
+                <div class="customize-menu-options">
+                    <p>Mines:  </p>
+                    <input id="mines" type="number" value="30" />
+                </div>
+            </div>
+            <canvas id="canvas" width="600" height="600">
+                <p class="warnings"><strong>ERROR: </strong>Your browser does not support html5 canvas, please use a supported browser</p>
+            </canvas>
+        </div>
         <div style="display: none;">
             <img id="empty" src="src/empty.png" />
             <img id="block1" src="src/block_1.png" />
@@ -63,9 +155,63 @@ let images = {
     mine: document.getElementById("mine"),
     mineClicked: document.getElementById("mine-clicked"),
 };
+let presets = {
+    easy: {
+        width: 10,
+        height: 10,
+        mines: 10
+    },
+    normal: {
+        width: 15,
+        height: 15,
+        mines: 30
+    },
+    hard: {
+        width: 20,
+        height: 20,
+        mines: 50
+    }
+};
 
-let game = new Minesweeper(document.getElementById("canvas"), images);
-game.start();
+let customizeMenu = document.getElementById("customize-menu");
+let difficulty = document.getElementById("difficulty");
+let game = new Minesweeper(canvas, images);
+
+function updateSelection(target) {
+    if (target.value == "custom")
+        customizeMenu.style.display = "block";
+    else customizeMenu.style.display = "none";
+}
+
+function start(button) {
+    let preset = null;
+    switch(difficulty.value) {
+        case "easy":
+            preset = presets.easy;
+            break;
+        case "normal":
+            preset = presets.normal;
+            break;
+        case "hard":
+            preset = presets.hard;
+            break;
+        default:
+            let h = document.getElementById("height").value;
+            let w = document.getElementById("width").value;
+            let m = document.getElementById("mines").value;
+            preset = {
+                height: h,
+                width: w,
+                mines: m
+            };
+            break;
+    }
+    game.usePreset(preset);
+    if (button.value == "Start") {
+        game.start();
+        button.value = "Restart";
+    } else game.restart();
+}
         </script>
     </body>
 </html>
